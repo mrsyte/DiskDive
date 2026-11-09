@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;" />
+  <title>DiskDive</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🤿</span>
+      <div>
+        <h1>DiskDive</h1>
+        <p class="tagline">See what's using space. Nothing is ever deleted.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="pickBtn" class="primary">Choose folder…</button>
+      <button id="rescanBtn" class="ghost" disabled>Rescan</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="intro" class="card intro">
+      <h2>Analyze a folder</h2>
+      <p>
+        Pick a personal folder — <strong>Downloads</strong>, <strong>Documents</strong>,
+        a <strong>project directory</strong> — and DiskDive maps what's taking up room.
+      </p>
+      <ul class="bullets">
+        <li><strong>Read-only.</strong> DiskDive never deletes, moves, or edits files.</li>
+        <li><strong>Suggestions only.</strong> It flags files that are <em>both</em> at least 30 days old <em>and</em> haven't been opened in 30+ days — for <em>you</em> to review.</li>
+        <li><strong>Protected files are never flagged.</strong> Keys, credentials, <code>.env</code>, configs, source manifests, and anything under system folders are left out.</li>
+      </ul>
+      <p class="muted small">System directories (/System, /Library, Program Files, …) can't be scanned.</p>
+    </section>
+
+    <section id="progress" class="card hidden">
+      <div class="spinner"></div>
+      <p id="progressText">Scanning…</p>
+      <p class="path muted small" id="scanTarget"></p>
+    </section>
+
+    <section id="error" class="card error hidden"></section>
+
+    <section id="results" class="hidden">
+      <div class="summary">
+        <div class="stat">
+          <span class="stat-value" id="statTotal">—</span>
+          <span class="stat-label">total size</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="statFiles">—</span>
+          <span class="stat-label">files</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="statDirs">—</span>
+          <span class="stat-label">folders</span>
+        </div>
+        <div class="stat highlight">
+          <span class="stat-value" id="statCandidates">—</span>
+          <span class="stat-label">reviewable</span>
+        </div>
+      </div>
+      <p class="path muted small" id="resultPath"></p>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="candidates">Suggested for review</button>
+        <button class="tab" data-tab="largest">Largest files</button>
+        <button class="tab" data-tab="types">By file type</button>
+      </div>
+
+      <div id="tab-candidates" class="tabpane">
+        <p class="note">
+          Every file here is <strong>30+ days old and hasn't been opened in 30+ days</strong>.
+          <strong>Review each one yourself</strong> before removing anything in Finder —
+          DiskDive only points, it doesn't act.
+        </p>
+        <div id="candidateList" class="list"></div>
+      </div>
+
+      <div id="tab-largest" class="tabpane hidden">
+        <div id="largestList" class="list"></div>
+      </div>
+
+      <div id="tab-types" class="tabpane hidden">
+        <div id="typesList" class="list"></div>
+      </div>
+
+      <p id="skippedNote" class="muted small"></p>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
