@@ -35,14 +35,40 @@ System directories (`/System`, `/Library`, `/usr`, `Program Files`, `C:\Windows`
 
 Symlinks are never followed, so a scan stays inside the folder you chose.
 
-## Run it
+## Download & run (macOS, Apple Silicon)
+
+**Get it:** download `DiskDive-mac-arm64.zip` from the
+**[latest release](https://github.com/mrsyte/DiskDive/releases/latest)**
+(under *Assets*).
+
+1. Unzip it — you get `DiskDive.app`.
+2. The app is **unsigned** (no paid Apple Developer certificate), so the first time
+   you open it macOS Gatekeeper will warn. **Right-click `DiskDive.app` → Open**, then
+   confirm **Open** in the dialog. (After the first time, double-clicking works.)
+   - If macOS still blocks it, run once in Terminal:
+     `xattr -dr com.apple.quarantine /path/to/DiskDive.app`
+
+Only the Apple Silicon (arm64) build is prebuilt. For Intel Macs, Windows, or Linux,
+build from source (below).
+
+## Run from source
 
 ```bash
 npm install
 npm start
 ```
 
-Requires Node.js and npm. `npm install` pulls in Electron (~download on first run).
+Requires Node.js and npm. `npm install` pulls in Electron (downloaded on first run).
+
+## Build a package yourself
+
+```bash
+# Simple: assemble DiskDive.app for this Mac's architecture
+npx electron-packager . DiskDive --platform=darwin --arch=arm64 --out=release --overwrite
+
+# Or full installers via electron-builder (dmg/zip on mac, nsis on win, AppImage on linux)
+npm run dist:mac     # or dist:win / dist:linux
+```
 
 ## How removal works
 
